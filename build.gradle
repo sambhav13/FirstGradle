@@ -1,0 +1,71 @@
+plugins {
+    id 'java'
+}
+
+
+//mainClassName = 'com.generali.app.FirstClass'
+
+
+
+group 'com.generali.app'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    //testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.5.2'
+
+    //integrationTestCompile  group: 'junit', name: 'junit', version: '4.12'
+}
+
+
+//sourceSets {
+//    integrationTest {
+//        java {
+//            compileClasspath += main.output + test.output
+//            runtimeClasspath += main.output + test.output
+//            srcDir file('src/integration-test/java')
+//        }
+//        resources.srcDir file('src/integration-test/resources')
+//    }
+//}
+//
+//configurations {
+//    integrationTestCompile.extendsFrom testCompile
+//    integrationTestRuntime.extendsFrom testRuntime
+//}
+
+task unitTest(type:Test){
+
+    useJUnitPlatform{
+        excludeTags 'integration-test'
+    }
+
+   // useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    outputs.upToDateWhen {false}
+}
+
+
+task integrationTest(type:Test){
+
+    useJUnitPlatform{
+        includeTags 'integration-test'
+    }
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+
+    outputs.upToDateWhen {false}
+}
+
+
+//integrationTest.dependsOn unitTest
